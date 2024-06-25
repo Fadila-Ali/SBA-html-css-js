@@ -1,6 +1,5 @@
 [build]
-# No build command needed for static sites
-publish = "target/static"
+publish = "src/main/resources/static"
 
 [[redirects]]
 from = "/*"
