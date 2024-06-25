@@ -120,4 +120,5 @@ function displayRecipeList() {
         `;
         recipeTableBody.appendChild(row);
     });
+
 }

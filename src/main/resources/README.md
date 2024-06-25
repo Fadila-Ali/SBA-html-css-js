@@ -11,13 +11,13 @@ Welcome to the Recipe Sharing Website! This project is built using HTML, CSS, an
 
 ## Technical Details
 
-- The project uses 10 different HTML tags, tables, forms, dropdown menus, web fonts, and regex validation.
+- The project uses many different HTML tags including tables, forms, dropdown menus, web fonts, and regex validation.
 - CSS includes inline, internal, and external styles, with five different selectors and complementary colors.
 - JavaScript includes external scripts, variables, if statements, loops, collections, functions, callbacks, and events.
 
 ## Deployment
 
-The project is hosted on GitHub Pages. You can view it [here](https://your-username.github.io/recipe-website).
+The project is hosted on GitHub. You can view it [here](https://github.com/Fadila-Ali/SBA-html-css-js).
 
 ## Deployment
 
@@ -27,4 +27,4 @@ The project is hosted on GitHub Pages. You can view it [here](https://your-usern
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/recipe-website.git
+   https://github.com/Fadila-Ali/SBA-html-css-js

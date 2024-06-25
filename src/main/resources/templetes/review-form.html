@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Review</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .review-section {
+            width: 75%;
+            margin: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: var(--card);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 1rem;
+            width: 50%;
+            color: var(--text-color);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: orange;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #reviewForm select {
+            background: none;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #808080;
+            border-radius: 4px;
+            color: var(--text-color);
+        }
+
+        #openModalBtn {
+            margin: 1rem 0;
+        }
+
+        #reviewsList {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .review {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #808080;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Recipe Haven<img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="index.html" style="color: var(--header-text-color)">Home</a></li>
+            <li><a href="recipe-list.html">Recipes</a></li>
+            <li><a href="review-form.html">Review</a></li>
+            <li class="contacts">
+                <label>
+                    <select>
+                        <option value="">Contacts</option>
+                        <option value="">GitHub</option>
+                        <option value="">LinkedIn</option>
+                        <option value="">Twitter</option>
+                    </select>
+                </label>
+            </li>
+        </ul>
+    </nav>
+    <button id="modeToggle" class="mode-toggle" onclick="toggleMode()">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+<main>
+    <section class="review-section">
+        <h2>Reviews</h2>
+        <button id="openModalBtn">Add a review</button>
+        <div id="reviewsList">
+            <!-- Reviews will be generated here -->
+        </div>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Recipe Sharing</p>
+</footer>
+
+<!-- The Modal -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Submit Your Review</h2>
+        <form id="reviewForm">
+            <label for="reviewerName"></label>
+            <input type="text" id="reviewerName" name="name" placeholder="Your name" required>
+
+            <label for="reviewRating"></label>
+            <select id="reviewRating" name="rating" required>
+                <option value="">Ratings</option>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Terrible</option>
+            </select>
+
+            <label for="reviewText">Review</label>
+            <textarea id="reviewText" name="review" rows="6" placeholder="Your review..." required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="/static/js/script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewsList = document.getElementById('reviewsList');
+        const modal = document.getElementById('reviewModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementsByClassName('close')[0];
+
+        // Sample reviews
+        const sampleReviews = [
+            {name: 'John Doe', rating: 5, review: 'Fantastic recipe!'},
+            {name: 'Jane Smith', rating: 4, review: 'Very good, but could use more salt.'},
+            {name: 'Alice Johnson', rating: 3, review: 'Average, but easy to follow.'},
+            {name: 'Bob Brown', rating: 5, review: 'Loved it! Will make again.'},
+            {name: 'Charlie White', rating: 2, review: 'Not to my taste.'},
+            {name: 'Daisy Green', rating: 4, review: 'Tasty and easy.'},
+            {name: 'Ella Black', rating: 5, review: 'Excellent!'},
+            {name: 'Frank Grey', rating: 3, review: 'It was okay.'},
+            {name: 'Grace Red', rating: 5, review: 'Amazing!'},
+            {name: 'Hank Blue', rating: 4, review: 'Pretty good.'}
+        ];
+
+        // Display sample reviews
+        sampleReviews.forEach(review => addReview(review.name, review.rating, review.review));
+
+        // Show modal
+        openModalBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Hide modal
+        closeModalBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        reviewForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('reviewerName').value;
+            const rating = document.getElementById('reviewRating').value;
+            const review = document.getElementById('reviewText').value;
+
+            if (validateReviewForm(name, rating, review)) {
+                addReview(name, rating, review);
+                reviewForm.reset();
+                modal.style.display = "none";
+            }
+        });
+
+        function validateReviewForm(name, rating, review) {
+            const nameRegex = /^[a-zA-Z ]{2,30}$/;
+            const reviewRegex = /^.{1,300}$/;
+
+            if (!nameRegex.test(name)) {
+                alert('Please enter a valid name (2-30 characters).');
+                return false;
+            }
+
+            if (!reviewRegex.test(review)) {
+                alert('Please enter a valid review (1-300 characters).');
+                return false;
+            }
+
+            return true;
+        }
+
+        function addReview(name, rating, review) {
+            const reviewElement = document.createElement('div');
+            reviewElement.classList.add('review');
+            reviewElement.innerHTML = `<div><img src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=" alt="user profile"/><div><h4><strong>${name}</strong></h4><p>${review}</p></div></div><p><em>${rating} stars</em></p>`;
+            reviewsList.insertBefore(reviewElement, reviewsList.firstChild);
+        }
+
+        // Toggle Mode
+        const modeToggle = document.getElementById('modeToggle');
+        const icon = document.querySelector('.mode-toggle i');
+        const body = document.body;
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            body.classList.add(savedTheme);
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+
+            // Save the user's theme preference to localStorage
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                localStorage.removeItem('theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+    });
+</script>
+</body>
+</html>
