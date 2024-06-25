@@ -1,0 +1,8 @@
+[build]
+publish = "target/static"
+command = "mvn clean package"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
