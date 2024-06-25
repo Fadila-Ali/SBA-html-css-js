@@ -148,106 +148,118 @@
 
 <script src="/static/js/script.js"></script>
 <script>
+    // Wait for the DOM content to be fully loaded
     document.addEventListener('DOMContentLoaded', () => {
-        const reviewForm = document.getElementById('reviewForm');
-        const reviewsList = document.getElementById('reviewsList');
-        const modal = document.getElementById('reviewModal');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementsByClassName('close')[0];
+        // Get DOM elements needed for reviews functionality
+        const reviewForm = document.getElementById('reviewForm'); // Form for submitting reviews
+        const reviewsList = document.getElementById('reviewsList'); // Container for displaying reviews
+        const modal = document.getElementById('reviewModal'); // Modal for submitting reviews
+        const openModalBtn = document.getElementById('openModalBtn'); // Button to open the modal
+        const closeModalBtn = document.getElementsByClassName('close')[0]; // Button to close the modal
 
-        // Sample reviews
+        // Sample reviews (for demonstration purposes)
         const sampleReviews = [
-            {name: 'John Doe', rating: 5, review: 'Fantastic recipe!'},
-            {name: 'Jane Smith', rating: 4, review: 'Very good, but could use more salt.'},
-            {name: 'Alice Johnson', rating: 3, review: 'Average, but easy to follow.'},
-            {name: 'Bob Brown', rating: 5, review: 'Loved it! Will make again.'},
-            {name: 'Charlie White', rating: 2, review: 'Not to my taste.'},
-            {name: 'Daisy Green', rating: 4, review: 'Tasty and easy.'},
-            {name: 'Ella Black', rating: 5, review: 'Excellent!'},
-            {name: 'Frank Grey', rating: 3, review: 'It was okay.'},
-            {name: 'Grace Red', rating: 5, review: 'Amazing!'},
-            {name: 'Hank Blue', rating: 4, review: 'Pretty good.'}
+            { name: 'John Doe', rating: 5, review: 'Fantastic recipe!' },
+            { name: 'Jane Smith', rating: 4, review: 'Very good, but could use more salt.' },
+            { name: 'Alice Johnson', rating: 3, review: 'Average, but easy to follow.' },
+            { name: 'Bob Brown', rating: 5, review: 'Loved it! Will make again.' },
+            { name: 'Charlie White', rating: 2, review: 'Not to my taste.' },
+            { name: 'Daisy Green', rating: 4, review: 'Tasty and easy.' },
+            { name: 'Ella Black', rating: 5, review: 'Excellent!' },
+            { name: 'Frank Grey', rating: 3, review: 'It was okay.' },
+            { name: 'Grace Red', rating: 5, review: 'Amazing!' },
+            { name: 'Hank Blue', rating: 4, review: 'Pretty good.' }
         ];
 
-        // Display sample reviews
+        // Display sample reviews initially
         sampleReviews.forEach(review => addReview(review.name, review.rating, review.review));
 
-        // Show modal
+        // Open modal when 'Add a review' button is clicked
         openModalBtn.onclick = function() {
             modal.style.display = "block";
         }
 
-        // Hide modal
+        // Close modal when close button in modal is clicked
         closeModalBtn.onclick = function() {
             modal.style.display = "none";
         }
 
+        // Close modal if user clicks outside the modal
         window.onclick = function(event) {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         }
 
+        // Handle form submission for submitting a review
         reviewForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
 
+            // Get values from the form inputs
             const name = document.getElementById('reviewerName').value;
             const rating = document.getElementById('reviewRating').value;
             const review = document.getElementById('reviewText').value;
 
+            // Validate the review form inputs
             if (validateReviewForm(name, rating, review)) {
-                addReview(name, rating, review);
-                reviewForm.reset();
-                modal.style.display = "none";
+                addReview(name, rating, review); // Add the review to the reviews list
+                reviewForm.reset(); // Reset the form fields
+                modal.style.display = "none"; // Close the modal
             }
         });
 
+        // Function to validate the review form inputs
         function validateReviewForm(name, rating, review) {
-            const nameRegex = /^[a-zA-Z ]{2,30}$/;
-            const reviewRegex = /^.{1,300}$/;
+            const nameRegex = /^[a-zA-Z ]{2,30}$/; // Regular expression for name validation (2-30 characters)
+            const reviewRegex = /^.{1,300}$/; // Regular expression for review validation (1-300 characters)
 
+            // Validate name
             if (!nameRegex.test(name)) {
-                alert('Please enter a valid name (2-30 characters).');
+                alert('Please enter a valid name (2-30 characters).'); // Show alert for invalid name
                 return false;
             }
 
+            // Validate review
             if (!reviewRegex.test(review)) {
-                alert('Please enter a valid review (1-300 characters).');
+                alert('Please enter a valid review (1-300 characters).'); // Show alert for invalid review
                 return false;
             }
 
-            return true;
+            return true; // Return true if form inputs are valid
         }
 
+        // Function to add a review to the reviews list
         function addReview(name, rating, review) {
-            const reviewElement = document.createElement('div');
-            reviewElement.classList.add('review');
+            const reviewElement = document.createElement('div'); // Create a new <div> element for the review
+            reviewElement.classList.add('review'); // Add 'review' class to the review element
+            // Set the HTML content for the review element
             reviewElement.innerHTML = `<div class="user"><img src="https://static-00.iconduck.com/assets.00/user-avatar-1-icon-511x512-ynet6qk9.png" alt="user profile"/><div><h4><strong>${name}</strong></h4><p>${review}</p></div></div><p><em>${rating} stars</em></p>`;
-            reviewsList.insertBefore(reviewElement, reviewsList.firstChild);
+            reviewsList.insertBefore(reviewElement, reviewsList.firstChild); // Insert the review at the beginning of the reviews list
         }
 
-        // Toggle Mode
-        const modeToggle = document.getElementById('modeToggle');
-        const icon = document.querySelector('.mode-toggle i');
-        const body = document.body;
+        // Toggle dark mode
+        const modeToggle = document.getElementById('modeToggle'); // Toggle button for dark mode
+        const icon = document.querySelector('.mode-toggle i'); // Icon inside the toggle button
+        const body = document.body; // Body element of the document
 
-        // Check for saved theme in localStorage
+        // Check for saved theme preference in localStorage
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
-            body.classList.add(savedTheme);
-            icon.classList.replace('fa-moon', 'fa-sun');
+            body.classList.add(savedTheme); // Apply saved theme class to body
+            icon.classList.replace('fa-moon', 'fa-sun'); // Change icon based on saved theme
         }
 
+        // Event listener for mode toggle button
         modeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
+            body.classList.toggle('dark-mode'); // Toggle 'dark-mode' class on body
 
             // Save the user's theme preference to localStorage
             if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark-mode');
-                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark-mode'); // Save dark mode preference
+                icon.classList.replace('fa-sun', 'fa-moon'); // Update icon for dark mode
             } else {
-                localStorage.removeItem('theme');
-                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.removeItem('theme'); // Remove theme preference if not in dark mode
+                icon.classList.replace('fa-moon', 'fa-sun'); // Update icon for light mode
             }
         });
     });
