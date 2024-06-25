@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Detail</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<header>
+    <h1>Recipe Haven<img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="index.html" style="color: #f9f9f9">Home</a></li>
+            <li><a href="recipe-list.html">Recipes</a></li>
+            <li class="contacts">
+                <label>
+                    <select>
+                        <option value="">Contacts</option>
+                        <option value="">GitHub</option>
+                        <option value="">LinkedIn</option>
+                        <option value="">Twitter</option>
+                    </select>
+                </label>
+            </li>
+        </ul>
+    </nav>
+    <button id="modeToggle" class="mode-toggle" onclick="toggleMode()">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+<main>
+    <section id="recipeDetail">
+        <!-- Recipe details will be displayed here -->
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Recipe Sharing</p>
+</footer>
+<script src="/static/js/recipes.js"></script>
+<script src="/static/js/script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modeToggle = document.getElementById('modeToggle');
+        const icon = document.querySelector('.mode-toggle i');
+        const body = document.body;
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            body.classList.add(savedTheme);
+        }
+
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+
+            // Save the user's theme preference to localStorage
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                localStorage.removeItem('theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+    });
+</script>
+</body>
+</html>
