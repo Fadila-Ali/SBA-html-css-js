@@ -1,6 +1,6 @@
 [build]
+# No build command needed for static sites
 publish = "target/static"
-command = "mvn clean package"
 
 [[redirects]]
 from = "/*"
