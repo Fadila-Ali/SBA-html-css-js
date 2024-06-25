@@ -67,6 +67,18 @@
             justify-content: space-between;
             border-bottom: 1px solid #808080;
         }
+
+        .user {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user img {
+            width: 3rem;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -210,7 +222,7 @@
         function addReview(name, rating, review) {
             const reviewElement = document.createElement('div');
             reviewElement.classList.add('review');
-            reviewElement.innerHTML = `<div><img src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=" alt="user profile"/><div><h4><strong>${name}</strong></h4><p>${review}</p></div></div><p><em>${rating} stars</em></p>`;
+            reviewElement.innerHTML = `<div class="user"><img src="https://static-00.iconduck.com/assets.00/user-avatar-1-icon-511x512-ynet6qk9.png" alt="user profile"/><div><h4><strong>${name}</strong></h4><p>${review}</p></div></div><p><em>${rating} stars</em></p>`;
             reviewsList.insertBefore(reviewElement, reviewsList.firstChild);
         }
 
