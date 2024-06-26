@@ -16,7 +16,6 @@
 
     <build>
         <plugins>
-            <!-- Add this plugin configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -33,6 +32,11 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/resources/static</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources/templates</directory>
+                                    <filtering>false</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -42,4 +46,3 @@
         </plugins>
     </build>
 </project>
-

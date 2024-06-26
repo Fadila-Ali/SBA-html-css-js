@@ -1,5 +1,6 @@
 [build]
-publish = "."
+command = "mvn clean package"
+publish = "target/static"
 
 [[redirects]]
 from = "/*"
