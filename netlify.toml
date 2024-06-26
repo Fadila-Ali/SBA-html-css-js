@@ -1,6 +1,6 @@
 [build]
-command = "mvn clean package"
-publish = "target/static"
+command = "docker-compose -f .netlify/docker-compose.yml run --rm build"
+publish = "static"
 
 [[redirects]]
 from = "/*"
