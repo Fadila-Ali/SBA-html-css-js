@@ -59,13 +59,18 @@
         #reviewsList {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
         }
 
         .review {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #808080;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+        }
+
+        .review:hover {
+            transform: scale(0.98);
+            transition-duration: 0.3s;
         }
 
         .user {
@@ -77,13 +82,12 @@
 
         .user img {
             width: 3rem;
-            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
 <header>
-    <h1>Recipe Haven<img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
+    <h1><span style="position: relative; bottom: 1rem">Recipe Haven</span><img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
     </h1>
     <nav>
         <ul>
@@ -111,7 +115,7 @@
         <h2>Reviews</h2>
         <button id="openModalBtn">Add a review</button>
         <div id="reviewsList">
-            <!-- Reviews will be generated here -->
+            <!-- Reviews will go here -->
         </div>
     </section>
 </main>
@@ -151,11 +155,11 @@
     // Wait for the DOM content to be fully loaded
     document.addEventListener('DOMContentLoaded', () => {
         // Get DOM elements needed for reviews functionality
-        const reviewForm = document.getElementById('reviewForm'); // Form for submitting reviews
-        const reviewsList = document.getElementById('reviewsList'); // Container for displaying reviews
-        const modal = document.getElementById('reviewModal'); // Modal for submitting reviews
-        const openModalBtn = document.getElementById('openModalBtn'); // Button to open the modal
-        const closeModalBtn = document.getElementsByClassName('close')[0]; // Button to close the modal
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewsList = document.getElementById('reviewsList');
+        const modal = document.getElementById('reviewModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementsByClassName('close')[0];
 
         // Sample reviews (for demonstration purposes)
         const sampleReviews = [
@@ -202,16 +206,18 @@
 
             // Validate the review form inputs
             if (validateReviewForm(name, rating, review)) {
-                addReview(name, rating, review); // Add the review to the reviews list
-                reviewForm.reset(); // Reset the form fields
+                addReview(name, rating, review);
+                reviewForm.reset();
                 modal.style.display = "none"; // Close the modal
             }
         });
 
         // Function to validate the review form inputs
         function validateReviewForm(name, rating, review) {
-            const nameRegex = /^[a-zA-Z ]{2,30}$/; // Regular expression for name validation (2-30 characters)
-            const reviewRegex = /^.{1,300}$/; // Regular expression for review validation (1-300 characters)
+            // Regular expression for name validation (2-30 characters)
+            const nameRegex = /^[a-zA-Z ]{2,30}$/;
+            // Regular expression for review validation (1-300 characters)
+            const reviewRegex = /^.{1,300}$/;
 
             // Validate name
             if (!nameRegex.test(name)) {
@@ -230,36 +236,57 @@
 
         // Function to add a review to the reviews list
         function addReview(name, rating, review) {
-            const reviewElement = document.createElement('div'); // Create a new <div> element for the review
-            reviewElement.classList.add('review'); // Add 'review' class to the review element
+            const reviewElement = document.createElement('div');
+            reviewElement.classList.add('review');
             // Set the HTML content for the review element
             reviewElement.innerHTML = `<div class="user"><img src="https://static-00.iconduck.com/assets.00/user-avatar-1-icon-511x512-ynet6qk9.png" alt="user profile"/><div><h4><strong>${name}</strong></h4><p>${review}</p></div></div><p><em>${rating} stars</em></p>`;
-            reviewsList.insertBefore(reviewElement, reviewsList.firstChild); // Insert the review at the beginning of the reviews list
+            // Insert the review at the beginning of the reviews list
+            reviewsList.insertBefore(reviewElement, reviewsList.firstChild);
+
+            applyOddPostionedReviewColors()
         }
 
+        // Give each list in odd position a different color
+        function applyOddPostionedReviewColors() {
+            const reviews = reviewsList.getElementsByClassName('review');
+            for (let i = 0; i < reviews.length; i++) {
+                // Odd position (0-based index, so even index is odd position)
+                if (i % 2 === 0) {
+                    reviews[i].style.backgroundColor = 'rgba(128, 128, 128, 0.1)';
+
+                } else {
+                    reviews[i].style.backgroundColor = '';
+                }
+            }
+        }
+
+        applyOddPostionedReviewColors()
+
         // Toggle dark mode
-        const modeToggle = document.getElementById('modeToggle'); // Toggle button for dark mode
-        const icon = document.querySelector('.mode-toggle i'); // Icon inside the toggle button
-        const body = document.body; // Body element of the document
+        const modeToggle = document.getElementById('modeToggle');
+        const icon = document.querySelector('.mode-toggle i');
+        const body = document.body;
 
         // Check for saved theme preference in localStorage
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             body.classList.add(savedTheme); // Apply saved theme class to body
-            icon.classList.replace('fa-moon', 'fa-sun'); // Change icon based on saved theme
+            icon.classList.replace('fa-moon', 'fa-sun');
         }
 
         // Event listener for mode toggle button
         modeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode'); // Toggle 'dark-mode' class on body
+            body.classList.toggle('dark-mode');
 
             // Save the user's theme preference to localStorage
             if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark-mode'); // Save dark mode preference
-                icon.classList.replace('fa-sun', 'fa-moon'); // Update icon for dark mode
+                localStorage.setItem('theme', 'dark-mode');
+                icon.classList.replace('fa-sun', 'fa-moon');
             } else {
-                localStorage.removeItem('theme'); // Remove theme preference if not in dark mode
-                icon.classList.replace('fa-moon', 'fa-sun'); // Update icon for light mode
+                // Remove theme preference if not in dark mode
+                localStorage.removeItem('theme');
+                // Update icon for light mode
+                icon.classList.replace('fa-moon', 'fa-sun');
             }
         });
     });

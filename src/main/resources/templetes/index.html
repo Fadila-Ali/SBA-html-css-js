@@ -9,7 +9,7 @@
 </head>
 <body>
 <header>
-    <h1>Recipe Haven<img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
+    <h1><span style="position: relative; bottom: 1rem">Recipe Haven</span><img src="/static/media/logo.png" style="object-fit: contain; width: 4rem; height: 4rem;" alt="logo"/>
     </h1>
     <nav>
         <ul>
@@ -18,11 +18,11 @@
             <li><a href="review-form.html">Review</a></li>
             <li class="contacts">
                 <label>
-                    <select>
+                    <select id="contactsSelect">
                         <option value="">Contacts</option>
-                        <option value="">GitHub</option>
-                        <option value="">LinkedIn</option>
-                        <option value="">Twitter</option>
+                        <option value="github">GitHub</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="email">Email</option>
                     </select>
                 </label>
             </li>
@@ -44,6 +44,18 @@
 <script src="/static/js/recipes.js"></script>
 <script src="/static/js/script.js"></script>
 <script>
+    // select contacts
+    document.getElementById('contactsSelect').addEventListener('change', function() {
+        const value = this.value;
+        if (value === 'github') {
+            window.open('https://github.com/Fadila-Ali', '_blank');
+        } else if (value === 'linkedin') {
+            window.open('https://www.linkedin.com/in/fadila-ali-dev/', '_blank'); // Adjust the LinkedIn URL as necessary
+        } else if (value === 'email') {
+            window.location.href = 'mailto:alifadila227@gmail.com';
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         const modeToggle = document.getElementById('modeToggle');
         const icon = document.querySelector('.mode-toggle i');
